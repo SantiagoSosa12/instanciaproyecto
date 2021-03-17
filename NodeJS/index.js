@@ -57,9 +57,16 @@ function saveImage(cedulaP){
 }
 
 function sendImageToCloudinary(){
-  cloudinary.uploader.upload("./subida/cedula.png", function(error, result) {console.log
-    (result, error)
+  var guardadoen = '';
+  cloudinary.uploader.upload("./subida/cedula.png", function(error, result) {
+    if(error){
+      console.log('Imagen NO ENVIADA A CLOUDINARY');
+    }else {
+      guardadoen = result.url;
+      console.log(result.url);
+    }
   });
+  return guardadoen;
 }
 
 function saveInBD(nombreP , ciudadP , cedulaP) {
