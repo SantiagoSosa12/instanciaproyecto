@@ -43,6 +43,7 @@ app.post('/registrarPersona', (req, res) => {
   console.log("Ciudad a registrar: " + ciudadP);
   saveImage(cedulaP);
   saveInBD(nombreP , ciudadP , cedulaP);
+  sendImageToCloudinary();
   res.send('Registrado!!');
 });
 
