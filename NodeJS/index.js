@@ -9,7 +9,7 @@ var cloudinary = require('cloudinary').v2;
 
 cloudinary.config({
   cloud_name: 'santiagososareyes',
-  apli_key: '862148536718167',
+  api_key: '862148536718167',
   api_secret: 'cxyfw959UDTjfsX9p89rjrST1Iw'
 });
 
