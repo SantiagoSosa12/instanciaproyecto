@@ -6,6 +6,8 @@ const mongoose = require('mongoose');
 var fs = require('fs');
 var ipConBD = '192.168.0.18';
 var cloudinary = require('cloudinary').v2;
+var ruteInCloudinary = "";
+
 
 cloudinary.config({
   cloud_name: 'santiagososareyes',
@@ -35,6 +37,7 @@ app.get('/', (req, res) => {
   res.send('Hello World!')
 })
 
+
 app.post('/registrarPersona', (req, res) => {
   var nombreP = req.body.Nombre;
   var ciudadP = req.body.Ciudad;
@@ -42,8 +45,12 @@ app.post('/registrarPersona', (req, res) => {
   console.log("Nombre a registrar: " + nombreP);
   console.log("Ciudad a registrar: " + ciudadP);
   saveImage(cedulaP);
-  saveInBD(nombreP , ciudadP , cedulaP);
-  sendImageToCloudinary();
+  sendImageToCloudinary().then(r => 
+    {console.log(r);
+    }).catch(()=>{
+      console.log('Algo salio mal: no se envio imagen Cloudinary');
+  });
+  saveInBD(nombreP , ciudadP , ruteInCloudinary);
   res.send('Registrado!!');
 });
 
@@ -56,18 +63,33 @@ function saveImage(cedulaP){
     });
 }
 
+
 function sendImageToCloudinary(){
-  var guardadoen = '';
-  cloudinary.uploader.upload("./subida/cedula.png", function(error, result) {
-    if(error){
-      console.log('Imagen NO ENVIADA A CLOUDINARY');
-    }else {
-      guardadoen = result.url;
-      console.log(result.url);
-    }
+  return new Promise( function(resolve , reject){
+    cloudinary.uploader.upload("./subida/cedula.png", function(error, result) {
+      if(error){
+        console.log('Imagen NO ENVIADA A CLOUDINARY');
+        console.log(error);
+      }else {
+        ruteInCloudinary = result.url;
+        console.log('Imagen enviada a cloudinary ' + ruteInCloudinary);
+      }
+    });
   });
-  return guardadoen;
+  
 }
+
+//function sendImageToCloudinary(){
+//  cloudinary.uploader.upload("./subida/cedula.png", function(error, result) {
+//    if(error){
+//      console.log('Imagen NO ENVIADA A CLOUDINARY');
+//     console.log(error);
+//    }else {
+//      ruteInCloudinary = result.url;
+//      console.log('Imagen enviada a cloudinary ' + ruteInCloudinary);
+//    }
+//  });
+//}
 
 function saveInBD(nombreP , ciudadP , cedulaP) {
   const ususariox = new usuario({ 
@@ -84,7 +106,7 @@ function saveInBD(nombreP , ciudadP , cedulaP) {
 function verUsuarios(){
   schema.find(function (err, usuarios) {
     if (err) return console.error(err);
-    console.log(kittens);
+    console.log(usuarios);
   });
 }
 
