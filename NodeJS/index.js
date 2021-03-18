@@ -79,17 +79,7 @@ function sendImageToCloudinary(){
   
 }
 
-//function sendImageToCloudinary(){
-//  cloudinary.uploader.upload("./subida/cedula.png", function(error, result) {
-//    if(error){
-//      console.log('Imagen NO ENVIADA A CLOUDINARY');
-//     console.log(error);
-//    }else {
-//      ruteInCloudinary = result.url;
-//      console.log('Imagen enviada a cloudinary ' + ruteInCloudinary);
-//    }
-//  });
-//}
+
 
 function saveInBD(nombreP , ciudadP , cedulaP) {
   const ususariox = new usuario({ 
